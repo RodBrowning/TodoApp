@@ -44,7 +44,7 @@ export default {
             indexForDelete: -1
         }
     },
-    methods: {        
+    methods: {
         deleteTaskConfirmation (id, index, task){
             this.taskForDelete = task;
             this.idForDelete = id;
@@ -52,7 +52,7 @@ export default {
             window.scrollTo(0, 0);
             this.showDeleteConfirmation();
         },
-        deleteTask(){
+        deleteTask (){
             let { task } = this.$refs;
             let timeline = new TimelineLite();
             timeline.to(task[this.indexForDelete], .7, {opacity: 0});
@@ -68,12 +68,12 @@ export default {
             this.showConfirmation = false;
         }
     },
-    mounted(){
+    mounted (){
         let { task } = this.$refs;
         let timeline = new TimelineLite();
         timeline.staggerTo(task, 1, { opacity: .9 }, .3 , "stagger").delay(.5);
     },
-    updated(){
+    updated (){
         let { task } = this.$refs;
         let timeline = new TimelineLite();
         timeline.to(task, 1, { opacity: .9 });
@@ -189,7 +189,7 @@ export default {
             margin: 6px;
         }
         .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s, transform .5s, height .5s;
+            transition: opacity .5s, transform .5s, height .5s;
         }
         .fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
             opacity: 0;

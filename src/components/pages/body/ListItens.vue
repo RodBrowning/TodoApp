@@ -39,19 +39,18 @@ export default {
         color: darkslategrey;
         margin: 1px;
         margin-left: 2.5rem;
+        cursor: pointer;
     }
     input[type='checkbox'] + p::before {
         position: absolute;
         content: "";
         margin: 5px 6px;
-        cursor: pointer;
         border: 4px solid;
         height: 1rem;
         width: 1rem;
         left: 0;
         box-shadow: inset 0 0 0px 0px;
         transition: box-shadow .3s;
-        
     }    
     input[type='checkbox']:checked + p::before {
         content: "";

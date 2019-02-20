@@ -23,7 +23,7 @@ export default {
             task: '',
             placeholderText: 'digite uma nova tarefa',
             buttonText: 'adicionar tarefa',
-            errorMsg: 'digite uma nova tarefa entes de continuar',
+            errorMsg: 'digite uma nova tarefa antes de continuar',
             hasEmptyError: false
         }
     },

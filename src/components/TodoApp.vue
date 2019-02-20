@@ -15,9 +15,9 @@
     </div>
 </template>
 <script>
-import Header from './pages/Header';
-import Todos from './pages/Todos';
-import AddTodo from './pages/AddTodo';
+import Header from './pages/header/Header';
+import AddTodo from './pages/header/AddTodo';
+import Todos from './pages/body/Todos';
 import {TimelineLite} from 'gsap/TweenMax';
 
 export default {
