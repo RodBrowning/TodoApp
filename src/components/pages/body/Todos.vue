@@ -15,11 +15,11 @@
             </div>
         </transition>
         <div>
-            <ul>
+            <ul ref="ul">
                 <li ref="task" v-for="(todo, index) in sendedTodos" v-bind:key="index">
                     <ListItens v-bind:todo="todo" v-bind:index="index" 
                         v-on:deleteConfirmation="deleteTaskConfirmation" 
-                        v-on:doneTask="$emit('doneTask', todo.id)"/>
+                        v-on:doneTask="$emit('doneTask', todo._id)"/>
                 </li>
             </ul>
         </div>
@@ -41,6 +41,7 @@ export default {
             deleteConfirmationMsg: 'excluir ?',
             showConfirmation: false,
             alloyToDelete: false,
+            isDeleted: false,
             taskForDelete: '',
             idForDelete: -1,
             indexForDelete: -1
@@ -56,9 +57,10 @@ export default {
         },
         deleteTask (){
             let { task } = this.$refs;
-            let timeline = new TimelineLite();
-            timeline.to(task[this.indexForDelete], .7, {opacity: 0});
+            task[this.indexForDelete].classList.add('deleted');
             setTimeout(()=>{
+                this.sendedTodos = this.sendedTodos.filter(todo => todo != this.sendedTodos[this.indexForDelete])
+                task[this.indexForDelete].classList.remove('deleted')
                 this.$emit('deleteTask', this.idForDelete);
                 this.hideDeleteConfirmation();
             },400);
@@ -78,7 +80,7 @@ export default {
     updated (){
         let { task } = this.$refs;
         let timeline = new TimelineLite();
-        timeline.to(task, 1, { opacity: .9 });
+         timeline.staggerTo(task, 1, { opacity: .9 }, .3 , "stagger").delay(.5);
     }
 }
 </script>
@@ -179,6 +181,13 @@ export default {
         opacity: 0;
         transform: translateY(-200px);
         height: 0;
+    }
+
+    .deleted {
+        opacity: 0 !important;
+        color: transparent;
+        transition: opacity 1s;
+        /*display: none;*/
     }
     @media screen and (max-width: 890px) {
         .alertWrapper {

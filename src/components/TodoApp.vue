@@ -9,7 +9,7 @@
             </div>
         </div>        
         <div>
-            <Todos v-bind:sendedTodos="todos" v-on:deleteTask="deleteTask" v-on:doneTask="doneTask"/>
+            <Todos v-if="todos" v-bind:sendedTodos="todos" v-on:deleteTask="deleteTask" v-on:doneTask="doneTask"/>
         </div>
         
     </div>
@@ -19,6 +19,7 @@ import Header from './pages/header/Header';
 import AddTodo from './pages/header/AddTodo';
 import Todos from './pages/body/Todos';
 import {TimelineLite} from 'gsap/TweenMax';
+import Axios from '../serve';
 
 export default {
     name: 'todo-app',
@@ -29,31 +30,34 @@ export default {
     },
     data(){
         return {
-        todos: [
-            {
-                id: 1,
-                task: "Primeira tarefa",
-                doneTask: false
-            },
-            {
-                id: 2,
-                task: "Segunda tarefa",
-                doneTask: true
-            }
-        ],
-        topDivs: this.$refs
+            todos: false,
+            topDivs: this.$refs
         }
     },
     methods: {
-        deleteTask (id){
-            this.todos = this.todos.filter(todo => todo.id != id);
+        async deleteTask (id){
+            console.log("deleteTask listen");
+            await Axios.deleteTask(id);
+            await Axios.getAllTasks()
+            .then(res => this.todos = res.data)
+            .then(()=>{
+                this.todos = this.todos.filter(todo => todo.id != id);
+            });
+            
         },
         addTodo (newTask){
-            this.todos = [...this.todos, newTask];
+            Axios.postTask(newTask)
+            .then(()=>{
+                Axios.getAllTasks()
+                .then(res => this.todos = res.data)
+            });
         },
         doneTask(id){
             this.todos = this.todos.map(todo => {
-                if( todo.id == id ) { todo.doneTask = !todo.doneTask }
+                if( todo._id == id ) {
+                    todo.doneTask = !todo.doneTask;
+                    Axios.putTask(id, todo.doneTask);
+                }
                 return todo;
             });
         }
@@ -64,6 +68,8 @@ export default {
         let timelineTop = new TimelineLite();
         timelineTop.to(header, 1.2, {top: 0}).delay(.5);
         timelineTop.to(form, 1.2, {top: 0}, .2);
+        Axios.getAllTasks()
+        .then(res => this.todos = res.data);
     }
 }
 </script>
