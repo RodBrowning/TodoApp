@@ -56,8 +56,8 @@ export default {
         let header = this.topDivs.header;
         let form = this.topDivs.form;
         let timelineTop = new TimelineLite();
-        timelineTop.to(header, .7, {top: 0});
-        timelineTop.to(form, 1.2, {top: 0},.45);
+        timelineTop.to(header, 1.2, {top: 0}).delay(.5);
+        timelineTop.to(form, 1.2, {top: 0}, .2);
     }
 }
 </script>
@@ -65,10 +65,10 @@ export default {
 <style scoped>
     .headerDiv{
         position: relative;
-        top: -100px;
+        top: -120px;
     }
     .formDiv{
         position: relative;
-        top: -100px;
+        top: -200px;
     }
 </style>

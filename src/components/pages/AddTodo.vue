@@ -1,14 +1,14 @@
 <template>
     <div>
         <form v-on:submit="addTask">
-            <input ref="inputTask" v-on:keydown="removeEmptyError" type="text" v-model="task" :placeholder="placeholderText"/>
+            <input ref="inputTask" @keydown.tab="focus" v-on:keydown="removeEmptyError" type="text" v-model="task" :placeholder="placeholderText"/>
             <input type="submit" :value="buttonText" />
         </form>
         <transition name="fade">
             <div ref="emptyError" v-if="hasEmptyError" class="alertWrapper">
                 <div class="errorAlert">
                     <p>{{ errorMsg }}</p>
-                </div>            
+                </div>
             </div>
         </transition>
     </div>
@@ -16,7 +16,6 @@
 
 <script>
 import uuidv4 from 'uuid/v4';
-import {TimeLineLite} from 'gsap/TweenMax';
 export default {
     name: 'add-app',
     data(){
@@ -29,24 +28,25 @@ export default {
         }
     },
     methods: {
-        addTask(e){            
+        addTask(e){
             e.preventDefault();
             const newTask = {
-                id: uuidv4('randon'),                
+                id: uuidv4('randon'),
                 task: this.task,
                 doneTask: false
             }
-            if(this.task.trim() != ''){                    
-                this.$emit('addTodo', newTask);                
-                this.$refs.inputTask.focus();
-                this.task = '';                
+            if(this.task.trim() != ''){
+                this.$emit('addTodo', newTask);
+                this.task = '';
                 this.removeEmptyError();
-            }else{                
-                this.addEmptyError();
-                this.$refs.inputTask.focus();
-                setTimeout(() =>{
-                    this.removeEmptyError();
-                }, 5000);
+            }else{
+                if(!this.hasEmptyError){
+                    this.addEmptyError();
+                    this.task = '';
+                    setTimeout(() =>{
+                        this.removeEmptyError();
+                    }, 3000);
+                }
             }
         },
         removeEmptyError (){
@@ -55,6 +55,9 @@ export default {
         addEmptyError (){
             this.hasEmptyError = true;
         }
+    },
+    mounted (){
+        this.$refs.inputTask.focus();
     }
 }
 </script>
@@ -62,6 +65,8 @@ export default {
 <style scoped>
     form {
         display: flex;
+        width: 70%;
+        margin: auto;
     }
     input[type="text"] {
         flex: 7;
@@ -73,9 +78,10 @@ export default {
     input[type="submit"] {
         background-color: dimgrey;
         border: 0;
-        color: whitesmoke;            
+        color: whitesmoke;
         padding: 0 3rem;
         flex: 1;
+        opacity: .9;
     }
     input[type="submit"]:hover {
         background-color: grey;
@@ -83,9 +89,19 @@ export default {
 
     @media only screen and (max-width: 490px) {
         input[type="submit"] {
-            padding: 0 1rem;
+            padding: 1rem;
+        }
+        form {
+            flex-direction: column;
         }
     }
+    
+    @media screen and (max-width: 890px){
+        form{
+            width: 100%;
+        }
+    }
+
 
     /* Alerts */
     .alertWrapper {        
@@ -100,11 +116,11 @@ export default {
     .errorAlert {
         background-color: #ff634794;
         border: 2px solid;
-        border-color: firebrick;        
+        border-color: firebrick;
         color: white;
-        padding: 1rem;
         margin-top: .4rem;
         width: 50%;
+        opacity: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -133,7 +149,7 @@ export default {
             margin: 6px;
         }
         .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s, transform .5s, height .5s;
+            transition: opacity .5s, transform .5s, height .5s;
         }
         .fade-enter, .fade-leave-to {
             opacity: 0;

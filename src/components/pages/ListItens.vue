@@ -1,19 +1,17 @@
 <template>
     <div id="list-item">
-        <div>
+        <label>
             <input type="checkbox" v-on:change="markAsDone">
             <p v-bind:class="{'done':todo.doneTask}">{{ todo.task }}</p>
-            <div class="buttonDiv">
-                <button @click="$emit('deleteConfirmation', todo.id, index, todo.task)">X</button>
-            </div>            
-        </div>
-    </div>    
+            <button @click="$emit('deleteConfirmation', todo.id, index, todo.task)"><i class="far fa-times-circle"></i></button>            
+        </label>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'list-item',
-    props: ["todo","index"],    
+    props: ["todo","index"],
     methods: {
         markAsDone (){
             this.todo.doneTask = !this.todo.doneTask;
@@ -22,63 +20,85 @@ export default {
 }
 </script>
 
-<style scoped>   
-    #list-item>div {
-        display: flex;
-        align-items: center;            
-        padding-left: 15px;
+<style scoped>
+    #list-item {
+        padding-left: 10px;
     }
-    p {
+    label {
+        display: flex;
+        justify-content: space-between;
         flex: 25;
-        font-weight: 400;
-        margin: 1px;
+        position: relative;
     }
     input[type='checkbox'] {
-        position: relative;
-        margin: 0 6px;
-        top: 1.2px;
-        flex: 1;
-        cursor: pointer;
+        display: none;
     }
-    .buttonDiv {
-        display: flex;
-        justify-content: center;
-        align-items: center;        
-        margin-right: 1em;
+    p {
+        flex: 30;
+        font-weight: bold;
+        color: darkslategrey;
+        margin: 1px;
+        margin-left: 2.5rem;
+    }
+    input[type='checkbox'] + p::before {
+        position: absolute;
+        content: "";
+        margin: 5px 6px;
+        cursor: pointer;
+        border: 4px solid;
+        height: 1rem;
+        width: 1rem;
+        left: 0;
+        box-shadow: inset 0 0 0px 0px;
+        transition: box-shadow .3s;
+        
+    }    
+    input[type='checkbox']:checked + p::before {
+        content: "";
+        box-shadow: inset 0 0 20px 10px;
     }
     button {
-        border: 1px solid black;
+        border: 0;
+        border-left: 0;
         background-color: white;
         color: black;
-        border-radius: 1rem;
         font-family: monospace;
         font-size: .8em;
         font-weight: bolder;
-        width: 1.2rem;
-        padding: 0;
+        display: flex;
+        flex: 2;
+        justify-content: center;
+        transition: border .5s, background-color .5s;
     }
     button:hover {
-        border-color: darkslategrey;
-        color: darkslategrey;
-        background-color: crimson;
+        background-color: #e73b32;
+        border-left: 2px solid #e73b32;
         color: white;
-        height: 1.15rem;
-        width: 1.15rem;
-        box-shadow: 0 0 0 2px indianred;
         cursor: pointer;
-        transition-property: 'background-color';
-        transition-duration: .1s;
-        transition-timing-function: linear;
     }
     button:active {
         outline: indianred;
-        box-shadow: 0 0 10px 2px indianred;
     }
     button:focus {
         outline: none;
     }
+    button i {
+        color: #e73b32;
+        font-size: 20px;
+        transition: color .5s;
+    }
+    button:hover i{
+        color: white;
+        font-size: 21px;
+    }
     .done {        
         text-decoration: line-through;
+    }
+
+    @media screen and (max-width: 425px){
+        button {
+            flex: 3;
+        }
     }
 </style>
 
