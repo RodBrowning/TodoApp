@@ -9,7 +9,7 @@
             </div>
         </div>        
         <div>
-            <Todos v-bind:todos="todos" v-on:deleteTask="deleteTask"/>
+            <Todos v-bind:sendedTodos="todos" v-on:deleteTask="deleteTask" v-on:doneTask="doneTask"/>
         </div>
         
     </div>
@@ -38,22 +38,28 @@ export default {
             {
                 id: 2,
                 task: "Segunda tarefa",
-                doneTask: false
+                doneTask: true
             }
         ],
         topDivs: this.$refs
         }
     },
     methods: {
-        deleteTask (id){            
+        deleteTask (id){
             this.todos = this.todos.filter(todo => todo.id != id);
         },
         addTodo (newTask){
             this.todos = [...this.todos, newTask];
+        },
+        doneTask(id){
+            this.todos = this.todos.map(todo => {
+                if( todo.id == id ) { todo.doneTask = !todo.doneTask }
+                return todo;
+            });
         }
     },
     mounted (){
-        let header = this.topDivs.header;
+        let {header} = this.topDivs;
         let form = this.topDivs.form;
         let timelineTop = new TimelineLite();
         timelineTop.to(header, 1.2, {top: 0}).delay(.5);

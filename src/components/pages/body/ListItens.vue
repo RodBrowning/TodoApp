@@ -1,9 +1,9 @@
 <template>
     <div id="list-item">
         <label>
-            <input type="checkbox" v-on:change="markAsDone">
+            <input type="checkbox" v-on:change="markAsDone" :checked="todo.doneTask">
             <p v-bind:class="{'done':todo.doneTask}">{{ todo.task }}</p>
-            <button @click="$emit('deleteConfirmation', todo.id, index, todo.task)"><i class="far fa-times-circle"></i></button>            
+            <button @click="$emit('deleteConfirmation', todo.id, index, todo.task)"><i class="far fa-times-circle"></i></button>
         </label>
     </div>
 </template>
@@ -14,7 +14,7 @@ export default {
     props: ["todo","index"],
     methods: {
         markAsDone (){
-            this.todo.doneTask = !this.todo.doneTask;
+            this.$emit('doneTask');
         }
     }
 }

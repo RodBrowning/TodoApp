@@ -16,8 +16,10 @@
         </transition>
         <div>
             <ul>
-                <li ref="task" v-for="(todo, index) in todos" v-bind:key="index">
-                    <ListItens v-bind:todo="todo" v-bind:index="index" v-on:deleteConfirmation="deleteTaskConfirmation" />
+                <li ref="task" v-for="(todo, index) in sendedTodos" v-bind:key="index">
+                    <ListItens v-bind:todo="todo" v-bind:index="index" 
+                        v-on:deleteConfirmation="deleteTaskConfirmation" 
+                        v-on:doneTask="$emit('doneTask', todo.id)"/>
                 </li>
             </ul>
         </div>
@@ -33,7 +35,7 @@ export default {
     components: {
         ListItens
     },
-    props: ["todos"],
+    props: ["sendedTodos"],
     data(){
         return {
             deleteConfirmationMsg: 'excluir ?',
