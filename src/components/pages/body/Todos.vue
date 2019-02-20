@@ -36,7 +36,7 @@ export default {
     props: ["todos"],
     data(){
         return {
-            deleteConfirmationMsg: 'excluir ?:',
+            deleteConfirmationMsg: 'excluir ?',
             showConfirmation: false,
             alloyToDelete: false,
             taskForDelete: '',

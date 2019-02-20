@@ -59,7 +59,7 @@ export default {
     button {
         border: 0;
         border-left: 0;
-        background-color: white;
+        background-color: transparent;
         color: black;
         font-family: monospace;
         font-size: .8em;
@@ -67,10 +67,8 @@ export default {
         display: flex;
         flex: 2;
         justify-content: center;
-        transition: border .5s, background-color .5s;
     }
-    button:hover {
-        background-color: #e73b32;
+    button:hover, button:focus , button:active{
         border-left: 2px solid #e73b32;
         color: white;
         cursor: pointer;
@@ -84,19 +82,26 @@ export default {
     button i {
         color: #e73b32;
         font-size: 20px;
-        transition: color .5s;
-    }
-    button:hover i{
-        color: white;
-        font-size: 21px;
     }
     .done {        
         text-decoration: line-through;
     }
 
-    @media screen and (max-width: 425px){
+    @media screen and (max-width: 890px){
         button {
             flex: 3;
+            transition: border .5s, background-color .5s;
+            background-color: white;
+        }
+        button:hover , button:focus , button:active {
+            background-color: #e73b32;
+            
+        }
+        button:hover i:before , button:focus i:before , button:active i:before {
+            color: white;
+            font-size: 21px;
+            font-weight: 600;
+            transition: color .5s;
         }
     }
 </style>
